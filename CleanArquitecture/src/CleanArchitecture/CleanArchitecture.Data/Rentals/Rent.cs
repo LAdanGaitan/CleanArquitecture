@@ -2,10 +2,11 @@
 using CleanArchitecture.Data.Vehicles;
 using CleanArchitecture.Domain.Abstractions;
 using CleanArchitecture.Domain.Rentals.Events;
+using CleanArchitecture.Domain.Shared;
 
 namespace CleanArchitecture.Domain.Rentals
 {
-	public sealed class Rent:Entity
+    public sealed class Rent:Entity
 	{
         private Rent(Guid id,Guid vehicleId,Guid userId,DateRange term,Money pricePerPeriod,Money maintenance,Money accesory,Money totalPrice,RentStatus status,DateTime creationDate):base(id)
         {
@@ -80,6 +81,19 @@ namespace CleanArchitecture.Domain.Rentals
 			Status = RentStatus.Cancelled;
 			CacellationDate = utcNow;
 			RaiseDomainEvent(new RefusedRentDomainEvent(Id));
+			return Result.Success();
+		}
+
+		public Result ToComplete(DateTime utcNow)
+		{
+			if (Status != RentStatus.Confimed)
+			{
+				return Result.Failure(RentError.NotConfimed);
+			}
+
+			Status = RentStatus.Complete;
+			DenialDate = utcNow;
+			RaiseDomainEvent(new CompletedRentDomainEvent(Id));
 			return Result.Success();
 		}
 	}

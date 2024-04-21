@@ -1,8 +1,9 @@
 ﻿using CleanArchitecture.Data.Abstractions;
+using CleanArchitecture.Domain.Shared;
 
 namespace CleanArchitecture.Data.Vehicles
 {
-	public sealed class Vehicle : Entity
+    public sealed class Vehicle : Entity
 	{
 		public Vehicle
 		(
