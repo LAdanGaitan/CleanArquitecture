@@ -1,0 +1,13 @@
+﻿namespace CleanArchitecture.Application.Vehicles.SearchVehicles
+{
+	public sealed class VehicleResponse
+	{
+        public Guid Id { get; init; }
+		public string? Model { get; init; }
+		public string? Vin { get; init; }
+		public decimal Price { get; init; }
+        public string? CoinType { get; init; }
+        public DirectionResponse? Direction { get; set; }
+
+    }
+}
