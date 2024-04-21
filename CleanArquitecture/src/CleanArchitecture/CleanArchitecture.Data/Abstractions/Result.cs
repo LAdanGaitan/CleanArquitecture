@@ -33,13 +33,13 @@ namespace CleanArchitecture.Domain.Abstractions
     public class Result<TValue> : Result
     {
         private readonly TValue? _value;
-        protected internal Result(TValue? value,bool isSuccess,Error error):base(isSuccess,error)
+        protected internal Result(TValue value,bool isSuccess,Error error):base(isSuccess,error)
         {
             _value = value;
         }
         [NotNull]
         public TValue Value => IsSuccess ? _value! : throw new InvalidOperationException("Error value output is not admissible");
 
-        public static implicit operator Result<TValue>(TValue value) => Create(value);
+        public static implicit operator Result<TValue>(TValue value) => Create(value)!;
     }
 }

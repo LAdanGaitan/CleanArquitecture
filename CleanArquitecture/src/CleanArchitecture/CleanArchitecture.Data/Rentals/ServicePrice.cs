@@ -1,8 +1,9 @@
 ﻿using CleanArchitecture.Data.Vehicles;
+using CleanArchitecture.Domain.Shared;
 
 namespace CleanArchitecture.Domain.Rentals
 {
-	public class ServicePrice
+    public class ServicePrice
 	{
         public PriceDetails  CalculatePrice(Vehicle vehicle,DateRange term)
 		{
