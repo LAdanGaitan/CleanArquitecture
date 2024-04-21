@@ -29,7 +29,7 @@ namespace CleanArchitecture.Data.Vehicles
 		public Address? Address { get; private set; }
 		public Money? Price { get; private set; }
 		public Money? Mantenance { get; private set; }
-		public DateTime? LastRentalDate { get; private set; }
+		public DateTime? LastRentalDate { get; internal set; }
 		public List<Accesory> Accesorys { get; private set; } = new();
 
 	}
