@@ -1,5 +1,6 @@
 ﻿using CleanArchitecture.Data.Abstractions;
 using CleanArchitecture.Data.Vehicles;
+using CleanArchitecture.Domain.Abstractions;
 using CleanArchitecture.Domain.Rentals.Events;
 
 namespace CleanArchitecture.Domain.Rentals
@@ -32,11 +33,54 @@ namespace CleanArchitecture.Domain.Rentals
         public DateTime? CompletedDate { get;private set; }
         public DateTime? CacellationDate { get;private set; }
 
-        public static Rent Reserved(Guid vehicleId,Guid userId,DateRange term,DateTime creationDate,PriceDetails priceDatails)
+        public static Rent Reserved(Vehicle vehicle,Guid userId,DateRange term,DateTime creationDate,ServicePrice servicePrice)
         {
-            var rent = new Rent(Guid.NewGuid(), vehicleId, userId, term, priceDatails.preciePerPeriod, priceDatails.mantenance, priceDatails.accesory, priceDatails.totalPrice, RentStatus.Reserved, creationDate);
+            var priceDetails = servicePrice.CalculatePrice(vehicle,term);
+            var rent = new Rent(Guid.NewGuid(), vehicle.Id, userId, term, priceDetails.preciePerPeriod, priceDetails.mantenance, priceDetails.accesory, priceDetails.totalPrice, RentStatus.Reserved, creationDate);
             rent.RaiseDomainEvent(new RentReservedDomainEvent(rent.Id));
+            vehicle.LastRentalDate = creationDate;
             return rent;
         }
-    }
+
+        public Result Confirm(DateTime utcNow)
+        {
+            if(Status != RentStatus.Reserved)
+            {
+                return Result.Failure(RentError.NotReserved);
+            }
+
+            Status = RentStatus.Confimed;
+            ConfimatedDate = utcNow;
+
+            RaiseDomainEvent(new RentConfirmedDomainEvent(Id));
+
+            return Result.Success();
+        }
+
+        public Result Decline(DateTime utcNow)
+        {
+            if(Status != RentStatus.Reserved)
+            {
+                return Result.Failure(RentError.NotReserved);
+            }
+
+            Status = RentStatus.Refused;
+            DenialDate = utcNow;
+            RaiseDomainEvent(new RefusedRentDomainEvent(Id));
+            return Result.Success();
+        }
+
+		public Result Cancelled(DateTime utcNow)
+		{
+			if (Status != RentStatus.Confimed)
+			{
+				return Result.Failure(RentError.NotConfimed);
+			}
+
+			Status = RentStatus.Cancelled;
+			CacellationDate = utcNow;
+			RaiseDomainEvent(new RefusedRentDomainEvent(Id));
+			return Result.Success();
+		}
+	}
 }
