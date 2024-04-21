@@ -1,6 +1,7 @@
 ﻿using CleanArchitecture.Domain.Rentals;
 using Microsoft.Extensions.DependencyInjection;
 
+
 namespace CleanArchitecture.Application
 {
 	public static  class DependecyInjection
