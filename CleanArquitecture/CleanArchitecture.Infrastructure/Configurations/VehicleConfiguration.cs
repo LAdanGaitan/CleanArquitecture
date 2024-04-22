@@ -33,6 +33,8 @@ namespace CleanArchitecture.Infrastructure.Configurations
 				priceBuilder.Property(coin => coin.MoneyType)
 				.HasConversion(coinType => coinType.Code, code => MoneyType.FromCode(code!));
 			});
+
+			builder.Property<uint>("Version").IsRowVersion();
 		}
 	}
 }
