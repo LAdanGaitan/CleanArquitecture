@@ -1,5 +1,5 @@
 ﻿namespace CleanArchitecture.Data.Vehicles
 {
-	public record Vin(string value);
+	public record Vin(string Value);
 	
 }
