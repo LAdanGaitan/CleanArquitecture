@@ -5,6 +5,7 @@ namespace CleanArchitecture.Data.Vehicles
 {
     public sealed class Vehicle : Entity
 	{
+		private Vehicle() { }
 		public Vehicle
 		(
 			Guid id,

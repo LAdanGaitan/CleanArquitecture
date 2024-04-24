@@ -8,6 +8,7 @@ namespace CleanArchitecture.Domain.Rentals
 {
     public sealed class Rent:Entity
 	{
+        private Rent() { }
         private Rent(Guid id,Guid vehicleId,Guid userId,DateRange term,Money pricePerPeriod,Money maintenance,Money accesory,Money totalPrice,RentStatus status,DateTime creationDate):base(id)
         {
             VehicleId = vehicleId;
